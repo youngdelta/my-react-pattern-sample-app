@@ -1,0 +1,318 @@
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+  flex: 1;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.app-header h1 {
+  background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.dark-mode-toggle {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-lg);
+}
+
+:root.dark-mode .dark-mode-toggle {
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.generator-card,
+.history-card {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+}
+
+.generator-card:hover,
+.history-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.generator-card h2,
+.history-card h2 {
+  margin-bottom: 1.5rem;
+  color: var(--text);
+  font-size: 1.5rem;
+}
+
+.lotto-numbers-display {
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+:root.dark-mode .lotto-numbers-display {
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+}
+
+.lotto-number {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: white;
+  color: #6366f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  transition: all 0.3s ease;
+}
+
+.lotto-number:hover {
+  transform: scale(1.1) rotateZ(5deg);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+}
+
+.lotto-number.color-1 { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%); color: white; }
+.lotto-number.color-2 { background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%); color: white; }
+.lotto-number.color-3 { background: linear-gradient(135deg, #ffd700 0%, #ffb900 100%); color: #333; }
+.lotto-number.color-4 { background: linear-gradient(135deg, #3cb371 0%, #2d8659 100%); color: white; }
+.lotto-number.color-5 { background: linear-gradient(135deg, #9370db 0%, #7b4fc4 100%); color: white; }
+.lotto-number.color-6 { background: linear-gradient(135deg, #20b2aa 0%, #16a198 100%); color: white; }
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.button-group button {
+  flex: 1;
+}
+
+.history-list {
+  list-style: none;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.history-item {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  padding: 1.25rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text);
+}
+
+:root.dark-mode .history-item {
+  background: linear-gradient(135deg, #334155 0%, #475569 100%);
+}
+
+.history-item:hover {
+  transform: translateX(4px);
+}
+
+:root.dark-mode .history-item:hover {
+  background: linear-gradient(135deg, #475569 0%, #64748b 100%);
+}
+
+.history-numbers {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.history-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.history-number:hover {
+  transform: scale(1.15) rotateZ(5deg);
+}
+
+.history-number.color-1 { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%); color: white; }
+.history-number.color-2 { background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%); color: white; }
+.history-number.color-3 { background: linear-gradient(135deg, #ffd700 0%, #ffb900 100%); color: #333; }
+.history-number.color-4 { background: linear-gradient(135deg, #3cb371 0%, #2d8659 100%); color: white; }
+.history-number.color-5 { background: linear-gradient(135deg, #9370db 0%, #7b4fc4 100%); color: white; }
+.history-number.color-6 { background: linear-gradient(135deg, #20b2aa 0%, #16a198 100%); color: white; }
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-light);
+}
+
+.empty-state p {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Scrollbar styling */
+.history-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .content-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .app-container {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .app-header h1 {
+    font-size: 2rem;
+  }
+
+  .generator-card,
+  .history-card {
+    padding: 1.5rem;
+  }
+
+  .lotto-number {
+    width: 50px;
+    height: 50px;
+    font-size: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .history-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .history-numbers {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 1rem;
+  }
+
+  .app-header {
+    margin-bottom: 2rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .generator-card,
+  .history-card {
+    padding: 1rem;
+  }
+
+  .lotto-numbers-display {
+    padding: 1.5rem;
+    min-height: 100px;
+  }
+
+  .lotto-number {
+    width: 45px;
+    height: 45px;
+    font-size: 0.9rem;
+  }
+
+  .history-number {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .dark-mode-toggle {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+}

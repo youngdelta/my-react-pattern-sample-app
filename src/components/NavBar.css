@@ -1,0 +1,214 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+  box-shadow: 0 2px 16px rgba(99, 102, 241, 0.08);
+}
+
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-decoration: none;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* 로그인한 사용자 프로필 링크 */
+.navbar-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  padding: 0.3rem 0.75rem 0.3rem 0.3rem;
+  border-radius: 2rem;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.navbar-profile:hover {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.07);
+}
+
+.navbar-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #6366f1;
+}
+
+.navbar-username {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* 버튼 공통 */
+.navbar-btn {
+  padding: 0.45rem 1.1rem;
+  border-radius: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+/* 로그인 버튼 */
+.navbar-btn--login {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+}
+
+.navbar-btn--login:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* 로그아웃 버튼 */
+.navbar-btn--logout {
+  background: transparent;
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.navbar-btn--logout:hover {
+  background: #e74c3c;
+  color: #fff;
+}
+
+/* 다크모드 */
+:root.dark-mode .navbar {
+  background: rgba(30, 30, 46, 0.88);
+  border-bottom-color: rgba(137, 180, 250, 0.15);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+}
+
+:root.dark-mode .navbar-username {
+  color: #cdd6f4;
+}
+
+:root.dark-mode .navbar-profile:hover {
+  border-color: #89b4fa;
+  background: rgba(137, 180, 250, 0.1);
+}
+
+:root.dark-mode .navbar-avatar {
+  border-color: #89b4fa;
+}
+
+:root.dark-mode .navbar-btn--logout {
+  border-color: #f38ba8;
+  color: #f38ba8;
+}
+
+:root.dark-mode .navbar-btn--logout:hover {
+  background: #f38ba8;
+  color: #1e1e2e;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-link {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text, #374151);
+  text-decoration: none;
+  padding: 0.3rem 0.1rem;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.navbar-link:hover {
+  color: #6366f1;
+  border-bottom-color: #6366f1;
+}
+
+/* 장바구니 아이콘 */
+.navbar-cart {
+  position: relative;
+  font-size: 1.4rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.3rem;
+  border-radius: 0.5rem;
+  transition: background 0.2s;
+}
+
+.navbar-cart:hover { background: rgba(99,102,241,0.1); }
+
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  line-height: 1;
+  border: 2px solid #fff;
+  animation: badge-pop 0.2s ease;
+}
+
+@keyframes badge-pop {
+  0%   { transform: scale(0.5); }
+  70%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+:root.dark-mode .cart-badge { border-color: #1e1e2e; }
+:root.dark-mode .navbar-link { color: #cdd6f4; }
+:root.dark-mode .navbar-link:hover { color: #89b4fa; border-bottom-color: #89b4fa; }
+
+/* 반응형 */
+@media (max-width: 480px) {
+  .navbar-inner {
+    padding: 0 1rem;
+  }
+
+  .navbar-username {
+    display: none;
+  }
+
+  .navbar-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.82rem;
+  }
+}

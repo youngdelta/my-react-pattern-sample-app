@@ -1,0 +1,424 @@
+/* ── Page Layout ── */
+.patterns-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 2rem 3rem;
+}
+
+.patterns-header {
+  margin-bottom: 1.5rem;
+}
+
+.patterns-header h1 {
+  font-size: 1.8rem;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 0.35rem;
+}
+
+.patterns-header p {
+  color: #888;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ── Tabs Navigation ── */
+.tabs-nav {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--border, #e5e7eb);
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  border: none;
+  background: transparent;
+  color: #888;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.2s, border-color 0.2s;
+  border-radius: 0.4rem 0.4rem 0 0;
+}
+
+.tab-btn:hover { color: #6366f1; background: rgba(99,102,241,0.05); }
+
+.tab-btn.active {
+  color: #6366f1;
+  border-bottom-color: #6366f1;
+  background: rgba(99,102,241,0.06);
+}
+
+.tab-icon { font-size: 1.1rem; }
+
+.tab-content {
+  animation: fade-in 0.25s ease;
+}
+
+@keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Pattern Tab Layout ── */
+.pattern-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.pattern-info {
+  background: var(--surface, #fff);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.pattern-info h2 {
+  font-size: 1.3rem;
+  margin: 0 0 0.6rem;
+  color: var(--text, #1a1a2e);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.pattern-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+}
+
+.pattern-badge--blue   { background: #eff6ff; color: #3b82f6; }
+.pattern-badge--green  { background: #f0fdf4; color: #10b981; }
+.pattern-badge--orange { background: #fff7ed; color: #f59e0b; }
+.pattern-badge--pink   { background: #fdf2f8; color: #ec4899; }
+.pattern-badge--teal   { background: #f0fdfa; color: #0d9488; }
+.pattern-badge--purple { background: #faf5ff; color: #9333ea; }
+
+.pattern-desc {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0 0 1.25rem;
+}
+
+/* ── Architecture Diagram ── */
+.diagram {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.diagram-flow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.diagram-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  border-radius: 0.6rem;
+  min-width: 100px;
+  text-align: center;
+  gap: 0.1rem;
+  transition: transform 0.3s;
+}
+
+.diagram-node strong { font-size: 0.85rem; }
+.diagram-node small  { font-size: 0.7rem; opacity: 0.75; }
+.diagram-icon        { font-size: 1.3rem; }
+
+.diagram-node--blue   { background: #eff6ff; color: #3b82f6; border: 2px solid #bfdbfe; }
+.diagram-node--green  { background: #f0fdf4; color: #10b981; border: 2px solid #a7f3d0; }
+.diagram-node--orange { background: #fff7ed; color: #f59e0b; border: 2px solid #fcd34d; }
+.diagram-node--purple { background: #faf5ff; color: #9333ea; border: 2px solid #d8b4fe; }
+.diagram-node--teal   { background: #f0fdfa; color: #0d9488; border: 2px solid #99f6e4; }
+.diagram-node--pink   { background: #fdf2f8; color: #ec4899; border: 2px solid #fbcfe8; }
+.diagram-node--active { background: #6366f1; color: #fff; border: 2px solid #4f46e5; transform: scale(1.08); }
+
+.diagram-arrow { font-size: 1.4rem; color: #aaa; font-weight: 700; }
+
+/* ── Demo Area ── */
+.pattern-demo {
+  background: var(--surface, #fff);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.demo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border, #f0f0f0);
+}
+
+.demo-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.demo-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+}
+
+.btn-group {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.sort-btn {
+  padding: 0.35rem 0.75rem;
+  border: 1.5px solid #ddd;
+  background: transparent;
+  color: var(--text, #555);
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.sort-btn:hover { border-color: #6366f1; color: #6366f1; }
+.sort-btn.active { background: #6366f1; color: #fff; border-color: #6366f1; }
+
+/* ── MVC ── */
+.mvc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.mvc-card {
+  border-radius: 0.6rem;
+  overflow: hidden;
+  background: #f8f9fa;
+  border: 1px solid #eee;
+  transition: transform 0.2s;
+}
+
+.mvc-card:hover { transform: translateY(-3px); }
+.mvc-card img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+
+.mvc-card-info { padding: 0.5rem; }
+.mvc-card-title { font-size: 0.78rem; font-weight: 600; margin: 0 0 0.3rem; color: var(--text, #333); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mvc-card-meta { display: flex; justify-content: space-between; }
+.price-tag { font-size: 0.8rem; font-weight: 700; color: #6366f1; }
+.rating-tag { font-size: 0.75rem; color: #f59e0b; }
+
+/* ── MVVM Posts ── */
+.posts-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.post-card {
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: box-shadow 0.2s;
+}
+
+.post-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+.post-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
+.post-tag { font-size: 0.7rem; background: #eff6ff; color: #3b82f6; padding: 0.15rem 0.45rem; border-radius: 0.3rem; font-weight: 600; }
+.post-title { font-size: 0.9rem; font-weight: 700; margin: 0 0 0.35rem; color: var(--text, #1a1a2e); }
+.post-body { font-size: 0.82rem; color: #666; margin: 0 0 0.6rem; line-height: 1.5; }
+
+.post-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+.action-btn {
+  padding: 0.3rem 0.6rem;
+  border: 1.5px solid #e5e7eb;
+  background: transparent;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text, #555);
+}
+
+.action-btn:hover { border-color: #6366f1; }
+.action-btn.active-like { background: #fef2f2; border-color: #fca5a5; color: #e74c3c; }
+.action-btn.active-bookmark { background: #fefce8; border-color: #fde047; color: #ca8a04; }
+.post-views { font-size: 0.78rem; color: #aaa; margin-left: auto; }
+
+/* ── MVP Recipes ── */
+.recipes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+
+.recipe-card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid #eee;
+  background: var(--surface-alt, #f8f9fa);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.recipe-card:hover, .recipe-card.expanded { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+
+.recipe-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+.recipe-info { padding: 0.7rem; }
+.recipe-cuisine { font-size: 0.7rem; font-weight: 700; color: #6366f1; text-transform: uppercase; }
+.recipe-name { font-size: 0.82rem; font-weight: 700; margin: 0.2rem 0; color: var(--text, #333); }
+.recipe-meta { font-size: 0.75rem; color: #666; display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.2rem; }
+
+.recipe-ingredients { font-size: 0.75rem; color: #555; padding: 0; margin: 0.4rem 0 0; list-style: none; }
+.recipe-ingredients li { padding: 0.1rem 0; }
+
+/* ── Observer ── */
+.observer-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.subject-box {
+  background: #eff6ff;
+  border: 2px solid #93c5fd;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.subject-label { font-size: 0.8rem; font-weight: 700; color: #3b82f6; margin-bottom: 0.6rem; }
+
+.subject-quote { text-align: center; padding: 0.75rem; }
+.subject-quote p { font-size: 0.88rem; color: #333; font-style: italic; margin: 0 0 0.3rem; }
+.subject-quote span { font-size: 0.78rem; color: #666; }
+
+.subject-history { border-top: 1px solid #bfdbfe; margin-top: 0.6rem; padding-top: 0.5rem; }
+.history-item-small { font-size: 0.75rem; color: #999; padding: 0.1rem 0; }
+
+.observers-box { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.observer-panel {
+  border: 2px solid;
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.8rem;
+  transition: opacity 0.3s;
+}
+
+.observer-panel.unsubscribed { opacity: 0.45; }
+
+.observer-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.35rem; }
+
+.sub-btn { font-size: 0.72rem; padding: 0.2rem 0.5rem; border: 1px solid currentColor; border-radius: 0.4rem; cursor: pointer; background: transparent; color: inherit; transition: all 0.2s; }
+.sub-btn.subscribed { background: currentColor; color: #fff; }
+
+.observer-content { font-size: 0.8rem; color: #555; margin: 0; font-style: italic; }
+.observer-unsubscribed { font-size: 0.78rem; color: #bbb; margin: 0; }
+
+/* ── Repository ── */
+.repo-layout { display: grid; grid-template-columns: 1fr 300px; gap: 1rem; }
+
+.todo-form { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
+.todo-form input { flex: 1; padding: 0.45rem 0.75rem; border: 1.5px solid #ddd; border-radius: 0.5rem; font-size: 0.88rem; outline: none; background: var(--surface, #fff); color: var(--text, #333); }
+.todo-form input:focus { border-color: #6366f1; }
+.todo-form button { padding: 0.45rem 0.9rem; background: #6366f1; color: #fff; border: none; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+
+.todo-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; max-height: 340px; overflow-y: auto; }
+
+.todo-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem; border-radius: 0.4rem; transition: background 0.15s; }
+.todo-item:hover { background: rgba(99,102,241,0.04); }
+.todo-item.done .todo-text { text-decoration: line-through; color: #bbb; }
+
+.todo-check { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0; flex-shrink: 0; }
+.todo-text { flex: 1; font-size: 0.85rem; color: var(--text, #333); }
+.todo-delete { background: none; border: none; cursor: pointer; font-size: 0.85rem; opacity: 0.4; transition: opacity 0.2s; flex-shrink: 0; }
+.todo-delete:hover { opacity: 1; }
+
+.repo-log, .flux-store {
+  background: #0f172a;
+  border-radius: 0.6rem;
+  padding: 0.75rem;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+}
+
+.log-header { font-size: 0.75rem; color: #94a3b8; font-weight: 700; margin-bottom: 0.4rem; }
+.log-entry { font-size: 0.72rem; color: #4ade80; padding: 0.1rem 0; line-height: 1.4; word-break: break-all; }
+.log-empty { font-size: 0.75rem; color: #475569; margin: 0; }
+
+/* ── Flux ── */
+.flux-layout { display: grid; grid-template-columns: 1fr 260px; gap: 1rem; }
+
+.flux-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+.flux-list { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.flux-card { border-radius: 0.5rem; overflow: hidden; background: var(--surface-alt, #f8f9fa); border: 1px solid #eee; }
+.flux-card img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.flux-card > div { padding: 0.4rem; }
+
+.flux-list-item { display: flex; gap: 0.6rem; align-items: center; padding: 0.4rem; border-radius: 0.4rem; background: var(--surface-alt, #f8f9fa); }
+.flux-list-item img { width: 48px; height: 48px; border-radius: 0.3rem; object-fit: cover; flex-shrink: 0; }
+
+.flux-card-title { font-size: 0.72rem; font-weight: 600; color: var(--text, #333); margin: 0 0 0.2rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.flux-cat-tag { font-size: 0.65rem; background: #eff6ff; color: #3b82f6; padding: 0.1rem 0.35rem; border-radius: 0.25rem; font-weight: 600; }
+
+/* ── 다크모드 ── */
+:root.dark-mode .pattern-info,
+:root.dark-mode .pattern-demo { background: #1e1e2e; }
+:root.dark-mode .pattern-info h2 { color: #cdd6f4; }
+:root.dark-mode .pattern-desc { color: #a6adc8; }
+:root.dark-mode .tabs-nav { border-bottom-color: #313244; }
+:root.dark-mode .tab-btn { color: #a6adc8; }
+:root.dark-mode .tab-btn:hover { color: #89b4fa; }
+:root.dark-mode .tab-btn.active { color: #89b4fa; border-bottom-color: #89b4fa; }
+:root.dark-mode .diagram-arrow { color: #45475a; }
+:root.dark-mode .post-card { border-color: #313244; }
+:root.dark-mode .post-title { color: #cdd6f4; }
+:root.dark-mode .post-body { color: #a6adc8; }
+:root.dark-mode .action-btn { border-color: #313244; color: #cdd6f4; }
+:root.dark-mode .mvc-card { background: #181825; border-color: #313244; }
+:root.dark-mode .mvc-card-title { color: #cdd6f4; }
+:root.dark-mode .recipe-card { background: #181825; border-color: #313244; }
+:root.dark-mode .recipe-name { color: #cdd6f4; }
+:root.dark-mode .recipe-meta { color: #a6adc8; }
+:root.dark-mode .subject-box { background: #1e2a3a; border-color: #3b5f8a; }
+:root.dark-mode .subject-quote p { color: #cdd6f4; }
+:root.dark-mode .observer-content { color: #a6adc8; }
+:root.dark-mode .todo-text { color: #cdd6f4; }
+:root.dark-mode .todo-form input { background: #313244; border-color: #45475a; color: #cdd6f4; }
+:root.dark-mode .todo-item:hover { background: rgba(137,180,250,0.06); }
+:root.dark-mode .demo-header { border-bottom-color: #313244; }
+:root.dark-mode .flux-card,
+:root.dark-mode .flux-list-item { background: #181825; border-color: #313244; }
+:root.dark-mode .flux-card-title { color: #cdd6f4; }
+:root.dark-mode .sort-btn { border-color: #45475a; color: #cdd6f4; }
+:root.dark-mode .sort-btn:hover { border-color: #89b4fa; color: #89b4fa; }
+
+/* ── 반응형 ── */
+@media (max-width: 1023px) {
+  .mvc-grid, .recipes-grid { grid-template-columns: repeat(2, 1fr); }
+  .flux-grid { grid-template-columns: repeat(3, 1fr); }
+  .flux-layout, .repo-layout { grid-template-columns: 1fr; }
+  .observer-layout { grid-template-columns: 1fr; }
+  .flux-store, .repo-log { max-height: 200px; overflow-y: auto; }
+}
+
+@media (max-width: 767px) {
+  .patterns-page { padding: 1rem; }
+  .tab-btn { padding: 0.5rem 0.7rem; font-size: 0.82rem; }
+  .tab-label { display: none; }
+  .tab-icon { font-size: 1.2rem; }
+  .tab-btn.active .tab-label { display: inline; }
+  .mvc-grid, .recipes-grid, .flux-grid { grid-template-columns: repeat(2, 1fr); }
+  .diagram { gap: 0.3rem; }
+  .diagram-node { min-width: 75px; padding: 0.5rem 0.6rem; }
+  .diagram-arrow { font-size: 1rem; }
+}

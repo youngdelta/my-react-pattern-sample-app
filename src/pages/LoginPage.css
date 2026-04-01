@@ -1,0 +1,132 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 1.25rem;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-icon {
+  font-size: 3rem;
+}
+
+.login-header h1 {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 1.75rem;
+  color: #1a1a2e;
+}
+
+.login-subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.form-group input {
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #ddd;
+  border-radius: 0.6rem;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #667eea;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin: 0;
+  background: #fdf0ef;
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.5rem;
+  border: 1px solid #f5c6c6;
+}
+
+.login-button {
+  padding: 0.85rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border: none;
+  border-radius: 0.6rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.login-button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-hint {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.825rem;
+  color: #999;
+}
+
+/* 다크모드 */
+:root.dark-mode .login-card {
+  background: #1e1e2e;
+  color: #cdd6f4;
+}
+
+:root.dark-mode .login-header h1 {
+  color: #cdd6f4;
+}
+
+:root.dark-mode .form-group label {
+  color: #a6adc8;
+}
+
+:root.dark-mode .form-group input {
+  background: #313244;
+  border-color: #45475a;
+  color: #cdd6f4;
+}
+
+:root.dark-mode .form-group input:focus {
+  border-color: #89b4fa;
+}
