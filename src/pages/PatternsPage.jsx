@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useReducer, createContext, useContext } from 'react';
 import './PatternsPage.css';
 
 /* ── 공통 유틸 ── */
@@ -545,9 +545,605 @@ function FluxTab() {
 }
 
 /* ══════════════════════════════
+   React Patterns — Code Snippets (module-level constants)
+══════════════════════════════ */
+const CODE_USE_DEBOUNCE = `function useDebounce(value, delay = 400) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
+  return debounced;   // ← 입력 멈춘 뒤 delay ms 후 값
+}`;
+
+const CODE_USE_FETCH = `function useFetch(url) {
+  const [data, setData]       = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState(null);
+  useEffect(() => {
+    if (!url) return;
+    setLoading(true);
+    fetch(url)
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(d => { setData(d); setLoading(false); })
+      .catch(e => { setError(e.message); setLoading(false); });
+  }, [url]);
+  return { data, loading, error };
+}`;
+
+const CODE_USE_PRODUCT_SEARCH = `// 훅을 조합(Compose)하여 새 훅 생성
+function useProductSearch(query) {
+  const debounced = useDebounce(query, 500);
+  const url = debounced
+    ? '/products/search?q=' + debounced + '&limit=6'
+    : '/products?limit=6';
+  const { data, loading } = useFetch(url);
+  return { products: data?.products ?? [], loading };
+}
+
+// 컴포넌트는 로직 없이 훅만 호출
+function SearchView() {
+  const [query, setQuery] = useState('');
+  const { products, loading } = useProductSearch(query);
+  return ( /* 렌더링만 담당 */ );
+}`;
+
+const CODE_TODO_REDUCER = `const TodoContext = createContext(null);
+
+function todoReducer(state, action) {
+  switch (action.type) {
+    case 'LOAD':
+      return { ...state, todos: action.payload };
+    case 'TOGGLE':
+      return { ...state, todos: state.todos
+        .map(t => t.id === action.id
+          ? { ...t, completed: !t.completed } : t) };
+    case 'ADD':
+      return { ...state,
+        todos: [action.payload, ...state.todos] };
+    case 'DELETE':
+      return { ...state,
+        todos: state.todos.filter(t => t.id !== action.id) };
+    default: return state;
+  }
+}`;
+
+const CODE_TODO_PROVIDER = `// Provider 한 곳에서 감싸기
+<TodoContext.Provider value={{ todos, dispatch }}>
+  <TodoStats />   {/* props 없음 */}
+  <TodoInput />   {/* props 없음 */}
+  <TodoList />    {/* props 없음 */}
+</TodoContext.Provider>
+
+// 각 컴포넌트는 useContext로 직접 구독
+function TodoStats() {
+  const { todos } = useContext(TodoContext);
+  const done = todos.filter(t => t.completed).length;
+  return <div>완료: {done} / {todos.length}</div>;
+}`;
+
+const CODE_ACCORDION = `const AccordionCtx = createContext(null);
+
+function Accordion({ children, defaultOpen }) {
+  const [openId, setOpenId] = useState(defaultOpen);
+  const toggle = id =>
+    setOpenId(prev => prev === id ? null : id);
+  return (
+    <AccordionCtx.Provider value={{ openId, toggle }}>
+      {children}
+    </AccordionCtx.Provider>
+  );
+}
+// 점 표기법으로 하위 컴포넌트 등록
+Accordion.Item   = AccordionItem;
+Accordion.Header = AccordionHeader;
+Accordion.Body   = AccordionBody;`;
+
+const CODE_ACCORDION_USAGE = `// 사용자는 내부 상태를 몰라도 됨
+<Accordion defaultOpen="r-1">
+  <Accordion.Item id="r-1">
+    <Accordion.Header id="r-1">
+      🍝 파스타 레시피
+    </Accordion.Header>
+    <Accordion.Body id="r-1">
+      재료 및 조리법...
+    </Accordion.Body>
+  </Accordion.Item>
+</Accordion>`;
+
+const CODE_WITH_LOADING = `function withLoading(WrappedComponent) {
+  return function WithLoadingComponent({
+    isLoading, ...props
+  }) {
+    if (isLoading)
+      return <div>⏳ 로딩 중...</div>;
+    return <WrappedComponent {...props} />;
+  };
+}
+
+// HOC 적용 (new Component 반환)
+const ProductCardWithLoading =
+  withLoading(ProductCard);
+
+// 사용: isLoading prop만 추가
+<ProductCardWithLoading
+  isLoading={loading}
+  product={product}
+/>`;
+
+const CODE_WITH_LOGGER = `function withLogger(WrappedComponent) {
+  return function WithLoggerComponent(props) {
+    const count = useRef(0);
+    count.current += 1;
+    return (
+      <>
+        <div className="logger-badge">
+          render #{count.current}
+        </div>
+        <WrappedComponent {...props} />
+      </>
+    );
+  };
+}
+
+// 적용: 원본 컴포넌트 수정 없이 기능 추가
+const LoggedCard = withLogger(ProductCard);`;
+
+/* ══════════════════════════════
+   7. Custom Hooks — Products
+══════════════════════════════ */
+function useDebounce(value, delay = 400) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
+  return debounced;
+}
+
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    if (!url) return;
+    setLoading(true);
+    setError(null);
+    fetch(url)
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then((d) => { setData(d); setLoading(false); })
+      .catch((e) => { setError(e.message); setLoading(false); });
+  }, [url]);
+  return { data, loading, error };
+}
+
+function useProductSearch(query) {
+  const debounced = useDebounce(query, 500);
+  const url = debounced
+    ? `https://dummyjson.com/products/search?q=${encodeURIComponent(debounced)}&limit=6`
+    : 'https://dummyjson.com/products?limit=6';
+  const { data, loading } = useFetch(url);
+  return { products: data?.products ?? [], loading, searchTerm: debounced };
+}
+
+function CustomHooksTab() {
+  const [query, setQuery] = useState('');
+  const { products, loading, searchTerm } = useProductSearch(query);
+
+  return (
+    <div className="pattern-tab">
+      <div className="pattern-info">
+        <h2>Custom Hooks <span className="pattern-badge pattern-badge--react">⚛️ React 권장</span></h2>
+        <p className="pattern-desc">
+          상태 로직을 컴포넌트 외부 함수로 추출하여 재사용합니다.
+          <code>useDebounce</code> → <code>useFetch</code> → <code>useProductSearch</code> 순으로
+          훅을 <strong>조합(Compose)</strong>하면, 컴포넌트는 렌더링만 담당하는 순수한 형태가 됩니다.
+        </p>
+        <PatternDiagram nodes={[
+          { icon: '⌨️', label: 'useDebounce', desc: '입력 지연 처리', color: 'react' },
+          { icon: '🌐', label: 'useFetch', desc: 'HTTP 캡슐화', color: 'react' },
+          { icon: '🔍', label: 'useProductSearch', desc: '훅 조합 (Compose)', color: 'active' },
+          { icon: '🖼️', label: 'Component', desc: '렌더링만 담당', color: 'purple' },
+        ]} />
+      </div>
+
+      <div className="pattern-demo">
+        <div className="react-split-layout">
+          <div className="react-code-panel">
+            <div className="code-block">
+              <div className="code-title">📎 useDebounce.js</div>
+              <pre>{CODE_USE_DEBOUNCE}</pre>
+            </div>
+            <div className="code-block">
+              <div className="code-title">📎 useFetch.js</div>
+              <pre>{CODE_USE_FETCH}</pre>
+            </div>
+            <div className="code-block">
+              <div className="code-title">📎 useProductSearch.js (훅 조합)</div>
+              <pre>{CODE_USE_PRODUCT_SEARCH}</pre>
+            </div>
+          </div>
+
+          <div className="react-demo-panel">
+            <div className="hooks-search-wrap">
+              <input
+                className="react-search-input"
+                placeholder="🔍 상품 검색 (500ms debounce 적용)..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              {searchTerm && (
+                <span className="debounce-badge">검색어: &quot;{searchTerm}&quot;</span>
+              )}
+            </div>
+            {loading ? (
+              <div className="demo-loading">⏳ 로딩 중...</div>
+            ) : (
+              <div className="hooks-product-grid">
+                {products.map((p) => (
+                  <div key={p.id} className="hooks-product-card">
+                    <img src={p.thumbnail} alt={p.title} />
+                    <p className="hooks-product-title">{p.title}</p>
+                    <span className="hooks-product-price">${p.price}</span>
+                    <span className="hooks-product-rating">⭐ {p.rating}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════
+   8. Context + useReducer — Todos
+══════════════════════════════ */
+const TodoCtx = createContext(null);
+function useTodoCtx() {
+  const ctx = useContext(TodoCtx);
+  if (!ctx) throw new Error('useTodoCtx must be inside TodoCtx.Provider');
+  return ctx;
+}
+
+function ctxTodoReducer(state, action) {
+  switch (action.type) {
+    case 'LOAD':   return { ...state, todos: action.payload, loading: false };
+    case 'TOGGLE': return { ...state, todos: state.todos.map((t) => t.id === action.id ? { ...t, completed: !t.completed } : t) };
+    case 'ADD':    return { ...state, todos: [action.payload, ...state.todos] };
+    case 'DELETE': return { ...state, todos: state.todos.filter((t) => t.id !== action.id) };
+    default: return state;
+  }
+}
+
+function CtxTodoStats() {
+  const { todos } = useTodoCtx();
+  const done = todos.filter((t) => t.completed).length;
+  return (
+    <div className="ctx-stats">
+      <span className="ctx-stat">전체 {todos.length}</span>
+      <span className="ctx-stat ctx-stat--done">✅ 완료 {done}</span>
+      <span className="ctx-stat ctx-stat--todo">⬜ 미완 {todos.length - done}</span>
+    </div>
+  );
+}
+
+function CtxTodoInput() {
+  const { dispatch } = useTodoCtx();
+  const [text, setText] = useState('');
+  const handleAdd = () => {
+    if (!text.trim()) return;
+    dispatch({ type: 'ADD', payload: { id: Date.now(), todo: text, completed: false } });
+    setText('');
+  };
+  return (
+    <div className="ctx-input-wrap">
+      <input className="ctx-input" placeholder="새 할일 입력 후 Enter..." value={text}
+        onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && handleAdd()} />
+      <button className="ctx-add-btn" onClick={handleAdd}>추가</button>
+    </div>
+  );
+}
+
+function CtxTodoList() {
+  const { todos, dispatch } = useTodoCtx();
+  return (
+    <div className="ctx-todo-list">
+      {todos.slice(0, 8).map((t) => (
+        <div key={t.id} className={`ctx-todo-item ${t.completed ? 'done' : ''}`}>
+          <button className="ctx-check" onClick={() => dispatch({ type: 'TOGGLE', id: t.id })}>
+            {t.completed ? '✅' : '⬜'}
+          </button>
+          <span className="ctx-todo-text">{t.todo}</span>
+          <button className="ctx-del-btn" onClick={() => dispatch({ type: 'DELETE', id: t.id })}>✕</button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ContextReducerTab() {
+  const [state, dispatch] = useReducer(ctxTodoReducer, { todos: [], loading: true });
+
+  useEffect(() => {
+    fetch('https://dummyjson.com/todos?limit=8')
+      .then((r) => r.json())
+      .then((d) => dispatch({ type: 'LOAD', payload: d.todos }));
+  }, []);
+
+  return (
+    <div className="pattern-tab">
+      <div className="pattern-info">
+        <h2>Context + useReducer <span className="pattern-badge pattern-badge--react">⚛️ React 권장</span></h2>
+        <p className="pattern-desc">
+          <code>createContext</code>로 상태를 전역 공유하고, <code>useReducer</code>로 상태 변경 로직을 중앙 관리합니다.
+          Props Drilling 없이 컴포넌트 트리 어디서나 상태를 읽고 dispatch 할 수 있습니다. <strong>Redux의 경량 내장 대안</strong>입니다.
+        </p>
+        <PatternDiagram nodes={[
+          { icon: '🗃️', label: 'useReducer', desc: '상태 + 로직 중앙화', color: 'react' },
+          { icon: '🌐', label: 'Context.Provider', desc: '트리 전체에 공유', color: 'active' },
+          { icon: '🪝', label: 'useContext', desc: '어디서나 구독', color: 'react' },
+          { icon: '📬', label: 'dispatch', desc: 'Action 발행', color: 'orange' },
+        ]} />
+      </div>
+
+      <div className="pattern-demo">
+        <div className="react-split-layout">
+          <div className="react-code-panel">
+            <div className="code-block">
+              <div className="code-title">📎 Context + Reducer 정의</div>
+              <pre>{CODE_TODO_REDUCER}</pre>
+            </div>
+            <div className="code-block">
+              <div className="code-title">📎 Provider & 자식 컴포넌트 (props 없음)</div>
+              <pre>{CODE_TODO_PROVIDER}</pre>
+            </div>
+          </div>
+
+          <div className="react-demo-panel">
+            <div className="ctx-provider-label">📦 &lt;TodoContext.Provider&gt;</div>
+            <TodoCtx.Provider value={{ todos: state.todos, dispatch }}>
+              {state.loading ? (
+                <div className="demo-loading">⏳ 로딩 중...</div>
+              ) : (
+                <>
+                  <CtxTodoStats />
+                  <CtxTodoInput />
+                  <CtxTodoList />
+                </>
+              )}
+            </TodoCtx.Provider>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════
+   9. Compound Components — Recipes
+══════════════════════════════ */
+const AccordionCtx = createContext(null);
+
+function Accordion({ children, defaultOpen = null }) {
+  const [openId, setOpenId] = useState(defaultOpen);
+  const toggle = (id) => setOpenId((prev) => (prev === id ? null : id));
+  return (
+    <AccordionCtx.Provider value={{ openId, toggle }}>
+      <div className="compound-accordion">{children}</div>
+    </AccordionCtx.Provider>
+  );
+}
+
+function AccordionItem({ id, children }) {
+  const { openId } = useContext(AccordionCtx);
+  return <div className={`compound-item ${openId === id ? 'open' : ''}`}>{children}</div>;
+}
+
+function AccordionHeader({ id, children }) {
+  const { openId, toggle } = useContext(AccordionCtx);
+  return (
+    <button className={`compound-header ${openId === id ? 'open' : ''}`} onClick={() => toggle(id)}>
+      <span className="compound-header-content">{children}</span>
+      <span className="compound-arrow">{openId === id ? '▲' : '▼'}</span>
+    </button>
+  );
+}
+
+function AccordionBody({ id, children }) {
+  const { openId } = useContext(AccordionCtx);
+  return openId === id ? <div className="compound-body">{children}</div> : null;
+}
+
+Accordion.Item   = AccordionItem;
+Accordion.Header = AccordionHeader;
+Accordion.Body   = AccordionBody;
+
+function CompoundComponentsTab() {
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('https://dummyjson.com/recipes?limit=5')
+      .then((r) => r.json())
+      .then((d) => { setRecipes(d.recipes); setLoading(false); });
+  }, []);
+
+  return (
+    <div className="pattern-tab">
+      <div className="pattern-info">
+        <h2>Compound Components <span className="pattern-badge pattern-badge--react">⚛️ React 권장</span></h2>
+        <p className="pattern-desc">
+          부모 컴포넌트가 Context로 내부 상태를 공유하고, 자식 컴포넌트들이 암묵적으로 그 상태에 접근합니다.
+          <code>Accordion.Item</code>, <code>Accordion.Header</code>처럼 <strong>점 표기법</strong>으로
+          표현적인 API를 제공합니다. Headless UI, Radix UI에서 광범위하게 사용됩니다.
+        </p>
+        <PatternDiagram nodes={[
+          { icon: '🗃️', label: 'Accordion', desc: '상태 소유 + Provider', color: 'react' },
+          { icon: '📦', label: 'Accordion.Item', desc: '논리 그룹', color: 'blue' },
+          { icon: '🔤', label: 'Accordion.Header', desc: 'toggle 트리거', color: 'green' },
+          { icon: '📄', label: 'Accordion.Body', desc: '조건부 콘텐츠', color: 'purple' },
+        ]} />
+      </div>
+
+      <div className="pattern-demo">
+        <div className="react-split-layout">
+          <div className="react-code-panel">
+            <div className="code-block">
+              <div className="code-title">📎 Compound Component 구조</div>
+              <pre>{CODE_ACCORDION}</pre>
+            </div>
+            <div className="code-block">
+              <div className="code-title">📎 사용 예시 (표현적 API)</div>
+              <pre>{CODE_ACCORDION_USAGE}</pre>
+            </div>
+          </div>
+
+          <div className="react-demo-panel">
+            {loading ? (
+              <div className="demo-loading">⏳ 로딩 중...</div>
+            ) : (
+              <Accordion defaultOpen={`recipe-${recipes[0]?.id}`}>
+                {recipes.map((r) => (
+                  <Accordion.Item key={r.id} id={`recipe-${r.id}`}>
+                    <Accordion.Header id={`recipe-${r.id}`}>
+                      🍽️ {r.name}
+                      <span className="compound-meta">{r.cuisine} · ⏱{r.prepTimeMinutes + r.cookTimeMinutes}분 · ⭐{r.rating}</span>
+                    </Accordion.Header>
+                    <Accordion.Body id={`recipe-${r.id}`}>
+                      <div className="compound-recipe">
+                        <div>
+                          <strong>🥗 재료</strong>
+                          <ul>{r.ingredients?.slice(0, 4).map((ing, i) => <li key={i}>{ing}</li>)}</ul>
+                        </div>
+                        <div>
+                          <strong>👨‍🍳 조리법</strong>
+                          <ol>{r.instructions?.slice(0, 3).map((step, i) => <li key={i}>{step}</li>)}</ol>
+                        </div>
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                ))}
+              </Accordion>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════
+   10. HOC (Higher-Order Component)
+══════════════════════════════ */
+function withLoading(WrappedComponent, msg = '⏳ 로딩 중...') {
+  return function WithLoadingComponent({ isLoading, ...props }) {
+    if (isLoading) return <div className="hoc-loading-placeholder">{msg}</div>;
+    return <WrappedComponent {...props} />;
+  };
+}
+
+function withLogger(WrappedComponent) {
+  return function WithLoggerComponent(props) {
+    const count = useRef(0);
+    count.current += 1;
+    return (
+      <div className="hoc-logger-wrap">
+        <div className="hoc-logger-badge">🔍 render #{count.current}</div>
+        <WrappedComponent {...props} />
+      </div>
+    );
+  };
+}
+
+function HocProductCard({ product }) {
+  return (
+    <div className="hoc-product-card">
+      <img src={product.thumbnail} alt={product.title} />
+      <p className="hoc-product-title">{product.title}</p>
+      <div className="hoc-product-meta">
+        <span className="hoc-product-price">${product.price}</span>
+        <span className="hoc-product-rating">⭐ {product.rating}</span>
+      </div>
+    </div>
+  );
+}
+
+const HocProductCardWithLoading = withLoading(HocProductCard);
+const HocProductCardWithLogger   = withLogger(HocProductCard);
+
+function HOCTab() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showLogger, setShowLogger] = useState(false);
+
+  useEffect(() => {
+    fetch('https://dummyjson.com/products?limit=4')
+      .then((r) => r.json())
+      .then((d) => { setProducts(d.products); setLoading(false); });
+  }, []);
+
+  return (
+    <div className="pattern-tab">
+      <div className="pattern-info">
+        <h2>HOC <span className="pattern-badge pattern-badge--orange">고차 컴포넌트</span></h2>
+        <p className="pattern-desc">
+          컴포넌트를 인자로 받아 <strong>기능이 강화된 새 컴포넌트를 반환</strong>하는 함수입니다.
+          로딩 처리(<code>withLoading</code>), 렌더 로깅(<code>withLogger</code>), 인증 체크(<code>withAuth</code>) 등
+          횡단 관심사를 원본 컴포넌트 수정 없이 분리합니다. Custom Hooks 등장 이전의 핵심 패턴입니다.
+        </p>
+        <PatternDiagram nodes={[
+          { icon: '📦', label: 'Component', desc: '원본 컴포넌트', color: 'blue' },
+          { icon: '🔧', label: 'withXxx()', desc: 'HOC 래핑', color: 'orange' },
+          { icon: '✨', label: 'Enhanced', desc: '기능 추가 컴포넌트', color: 'active' },
+          { icon: '🖼️', label: 'Render', desc: '조건부 렌더링', color: 'purple' },
+        ]} />
+      </div>
+
+      <div className="pattern-demo">
+        <div className="react-split-layout">
+          <div className="react-code-panel">
+            <div className="code-block">
+              <div className="code-title">📎 withLoading HOC</div>
+              <pre>{CODE_WITH_LOADING}</pre>
+            </div>
+            <div className="code-block">
+              <div className="code-title">📎 withLogger HOC</div>
+              <pre>{CODE_WITH_LOGGER}</pre>
+            </div>
+          </div>
+
+          <div className="react-demo-panel">
+            <div className="hoc-toggle-bar">
+              <span className="demo-label">적용 HOC:</span>
+              <label className={`hoc-toggle-btn ${!showLogger ? 'active' : ''}`} onClick={() => setShowLogger(false)}>
+                🔄 withLoading
+              </label>
+              <label className={`hoc-toggle-btn ${showLogger ? 'active' : ''}`} onClick={() => setShowLogger(true)}>
+                🔍 withLogger
+              </label>
+            </div>
+            <div className="hoc-cards-grid">
+              {showLogger
+                ? products.map((p) => <HocProductCardWithLogger key={p.id} product={p} />)
+                : loading
+                  ? [1, 2, 3, 4].map((i) => <HocProductCardWithLoading key={i} isLoading={true} product={null} />)
+                  : products.map((p) => <HocProductCardWithLoading key={p.id} isLoading={false} product={p} />)
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════
    Main PatternsPage
 ══════════════════════════════ */
-const TABS = [
+const GENERAL_TABS = [
   { id: 'mvc',        label: 'MVC',        icon: '🔷', component: MVCTab },
   { id: 'mvvm',       label: 'MVVM',       icon: '🔶', component: MVVMTab },
   { id: 'mvp',        label: 'MVP',        icon: '🟢', component: MVPTab },
@@ -556,9 +1152,30 @@ const TABS = [
   { id: 'flux',       label: 'Flux',       icon: '⚡',  component: FluxTab },
 ];
 
+const REACT_TABS = [
+  { id: 'custom-hooks', label: 'Custom Hooks', icon: '🪝', component: CustomHooksTab },
+  { id: 'context',      label: 'Context',      icon: '🌐', component: ContextReducerTab },
+  { id: 'compound',     label: 'Compound',     icon: '🧩', component: CompoundComponentsTab },
+  { id: 'hoc',          label: 'HOC',          icon: '🔧', component: HOCTab },
+];
+
+const ALL_TABS = [...GENERAL_TABS, ...REACT_TABS];
+
 function PatternsPage() {
   const [activeTab, setActiveTab] = useState('mvc');
-  const ActiveComponent = TABS.find((t) => t.id === activeTab)?.component;
+  const ActiveComponent = ALL_TABS.find((t) => t.id === activeTab)?.component;
+
+  const renderTabGroup = (tabs, isReact = false) =>
+    tabs.map((tab) => (
+      <button
+        key={tab.id}
+        className={`tab-btn ${isReact ? 'tab-btn--react' : ''} ${activeTab === tab.id ? 'active' : ''}`}
+        onClick={() => setActiveTab(tab.id)}
+      >
+        <span className="tab-icon">{tab.icon}</span>
+        <span className="tab-label">{tab.label}</span>
+      </button>
+    ));
 
   return (
     <div className="patterns-page">
@@ -567,17 +1184,14 @@ function PatternsPage() {
         <p>각 아키텍처 패턴을 실제 API 데이터로 체험해보세요.</p>
       </div>
 
-      <div className="tabs-nav">
-        {TABS.map((tab) => (
-          <button
-            key={tab.id}
-            className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            <span className="tab-icon">{tab.icon}</span>
-            <span className="tab-label">{tab.label}</span>
-          </button>
-        ))}
+      <div className="tabs-group-section">
+        <div className="tabs-group-label">일반 아키텍처 패턴</div>
+        <div className="tabs-nav">{renderTabGroup(GENERAL_TABS, false)}</div>
+      </div>
+
+      <div className="tabs-group-section">
+        <div className="tabs-group-label tabs-group-label--react">⚛️ React 권장 패턴</div>
+        <div className="tabs-nav tabs-nav--react">{renderTabGroup(REACT_TABS, true)}</div>
       </div>
 
       <div className="tab-content">
