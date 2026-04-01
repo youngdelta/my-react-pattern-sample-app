@@ -10,6 +10,7 @@ import ProfilePage from './pages/ProfilePage'
 import ProductsPage from './pages/ProductsPage'
 import CartPage from './pages/CartPage'
 import PatternsPage from './pages/PatternsPage'
+import MethodsPage from './pages/MethodsPage'
 import useLottoStore from './store/lottoStore'
 
 function LottoApp() {
@@ -61,6 +62,7 @@ function App() {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/patterns" element={<PatternsPage />} />
+        <Route path="/methods" element={<MethodsPage />} />
         <Route
           path="/profile"
           element={

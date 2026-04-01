@@ -28,6 +28,9 @@ function NavBar() {
           <Link to="/patterns" className="navbar-link">
             🏗️ 패턴
           </Link>
+          <Link to="/methods" className="navbar-link">
+            🗂️ 개발 방법들
+          </Link>
         </div>
 
         <div className="navbar-actions">
