@@ -14,19 +14,12 @@ import MethodsPage from './pages/MethodsPage'
 import useLottoStore from './store/lottoStore'
 
 function LottoApp() {
-  const { historyLottoNumbers, toggleDarkMode, isDarkMode } = useLottoStore();
+  const { historyLottoNumbers } = useLottoStore();
 
   return (
     <div className="app-container">
       <div className="app-header">
         <h1>🎰 로또 번호 생성기</h1>
-        <button
-          className="dark-mode-toggle"
-          onClick={toggleDarkMode}
-          title={isDarkMode ? '라이트 모드' : '다크 모드'}
-        >
-          {isDarkMode ? '☀️' : '🌙'}
-        </button>
       </div>
 
       <div className="content-wrapper">

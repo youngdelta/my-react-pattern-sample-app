@@ -1,12 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import useCartStore from '../store/cartStore';
+import useLottoStore from '../store/lottoStore';
 import './NavBar.css';
 
 function NavBar() {
   const navigate = useNavigate();
   const { user, accessToken, logout } = useAuthStore();
   const cartItems = useCartStore((s) => s.items);
+  const { isDarkMode, toggleDarkMode } = useLottoStore();
 
   const totalItems = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
@@ -34,6 +36,15 @@ function NavBar() {
         </div>
 
         <div className="navbar-actions">
+          {/* 다크모드 토글 */}
+          <button
+            className="navbar-theme-toggle"
+            onClick={toggleDarkMode}
+            title={isDarkMode ? '라이트 모드' : '다크 모드'}
+          >
+            {isDarkMode ? '☀️' : '🌙'}
+          </button>
+
           {/* 장바구니 아이콘 */}
           <Link to="/cart" className="navbar-cart" title="장바구니">
             🛒
