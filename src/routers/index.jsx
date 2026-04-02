@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
+import App from '../App'
 import LottoApp from '../components/LottoApp'
 import PrivateRoute from '../components/PrivateRoute'
 import LoginPage from '../pages/LoginPage'
@@ -10,26 +11,29 @@ import MethodsPage from '../pages/MethodsPage'
 import MethodsPage2 from '../pages/MethodsPage2'
 import DashboardPage from '../pages/DashboardPage'
 
-export default function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<LottoApp />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/products" element={<ProductsPage />} />
-      <Route path="/cart" element={<CartPage />} />
-      <Route path="/patterns" element={<PatternsPage />} />
-      <Route path="/methods" element={<MethodsPage />} />
-      <Route path="/methods2" element={<MethodsPage2 />} />
-      <Route path="/dashboard" element={<DashboardPage />} />
-      <Route
-        path="/profile"
-        element={
+const router = createBrowserRouter([
+  {
+    element: <App />,
+    children: [
+      { path: '/', element: <LottoApp /> },
+      { path: '/login', element: <LoginPage /> },
+      { path: '/products', element: <ProductsPage /> },
+      { path: '/cart', element: <CartPage /> },
+      { path: '/patterns', element: <PatternsPage /> },
+      { path: '/methods', element: <MethodsPage /> },
+      { path: '/methods2', element: <MethodsPage2 /> },
+      { path: '/dashboard', element: <DashboardPage /> },
+      {
+        path: '/profile',
+        element: (
           <PrivateRoute>
             <ProfilePage />
           </PrivateRoute>
-        }
-      />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-  )
-}
+        ),
+      },
+      { path: '*', element: <Navigate to="/" replace /> },
+    ],
+  },
+])
+
+export default router

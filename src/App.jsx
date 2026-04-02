@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
+import { Outlet } from 'react-router-dom'
 import './App.css'
 import NavBar from './components/NavBar'
-import AppRoutes from './routers'
 import useLottoStore from './store/lottoStore'
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <AppRoutes />
+      <Outlet />
     </>
   );
 }
