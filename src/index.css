@@ -12,6 +12,9 @@
   --text: #1e293b;
   --text-light: #64748b;
   --border: #e2e8f0;
+  --card-bg: #ffffff;
+  --input-bg: #f9fafb;
+  --surface-alt: #f8f9fa;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
 
@@ -24,6 +27,9 @@
 :root.dark-mode {
   --background: #0f172a;
   --surface: #1e293b;
+  --card-bg: #1e1e2e;
+  --input-bg: #313244;
+  --surface-alt: #181825;
   --text: #f1f5f9;
   --text-light: #cbd5e1;
   --border: #334155;
