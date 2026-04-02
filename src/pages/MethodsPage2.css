@@ -7,6 +7,12 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 1.5rem 1rem 3rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .m2-header {
@@ -605,7 +611,11 @@
 /* ══════════════════════════════
    Dark Mode
 ══════════════════════════════ */
-:root.dark-mode .methods2-page { color: #cdd6f4; }
+:root.dark-mode .methods2-page {
+  background: rgba(30, 41, 59, 0.88);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  color: #cdd6f4;
+}
 :root.dark-mode .m2-header h1 { -webkit-text-fill-color: transparent; }
 :root.dark-mode .m2-header p { color: #a6adc8; }
 :root.dark-mode .m2-hb { background: rgba(139,92,246,0.15); border-color: rgba(139,92,246,0.3); color: #c4b5fd; }

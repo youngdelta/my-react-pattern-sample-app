@@ -3,6 +3,12 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 2rem 3rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .patterns-header {
@@ -62,6 +68,10 @@
 
 .tab-content {
   animation: fade-in 0.25s ease;
+  background: var(--surface, #fff);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border, #e2e8f0);
 }
 
 @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -371,6 +381,11 @@
 .flux-cat-tag { font-size: 0.65rem; background: #eff6ff; color: #3b82f6; padding: 0.1rem 0.35rem; border-radius: 0.25rem; font-weight: 600; }
 
 /* ── 다크모드 ── */
+:root.dark-mode .patterns-page {
+  background: rgba(30, 41, 59, 0.88);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+:root.dark-mode .tab-content { background: #1e293b; border-color: #334155; }
 :root.dark-mode .pattern-info,
 :root.dark-mode .pattern-demo { background: #1e1e2e; }
 :root.dark-mode .pattern-info h2 { color: #cdd6f4; }
