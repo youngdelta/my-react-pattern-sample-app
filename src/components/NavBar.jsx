@@ -39,6 +39,9 @@ function NavBar() {
           <Link to="/dashboard" className="navbar-link">
             📊 대시보드
           </Link>
+          <Link to="/design" className="navbar-link">
+            📐 컴포넌트 설계
+          </Link>
         </div>
 
         <div className="navbar-actions">

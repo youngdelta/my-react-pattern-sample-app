@@ -10,6 +10,7 @@ import PatternsPage from '../pages/PatternsPage'
 import MethodsPage from '../pages/MethodsPage'
 import MethodsPage2 from '../pages/MethodsPage2'
 import DashboardPage from '../pages/DashboardPage'
+import ComponentDesignPage from '../pages/ComponentDesignPage'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
       { path: '/methods', element: <MethodsPage /> },
       { path: '/methods2', element: <MethodsPage2 /> },
       { path: '/dashboard', element: <DashboardPage /> },
+      { path: '/design', element: <ComponentDesignPage /> },
       {
         path: '/profile',
         element: (
