@@ -13,6 +13,8 @@ const ContextTab      = lazy(() => import('./methods/ContextReducer'));
 const CompoundTab     = lazy(() => import('./methods/Compound'));
 const HOCTab          = lazy(() => import('./methods/HOC'));
 const ContainerTab    = lazy(() => import('./methods/ContainerPresentational'));
+const OptimizationTab = lazy(() => import('./methods/Optimization'));
+const ModernReactTab  = lazy(() => import('./methods/ModernReact'));
 
 const GENERAL_TABS = [
   { id: 'mvc',        label: 'MVC',        icon: '🔷', component: MVCTab },
@@ -24,11 +26,13 @@ const GENERAL_TABS = [
 ];
 
 const REACT_TABS = [
-  { id: 'container',    label: 'Container',     icon: '💡', component: ContainerTab },
-  { id: 'custom-hooks', label: 'Custom Hooks',  icon: '🪝', component: CustomHooksTab },
-  { id: 'context',      label: 'Context',       icon: '🌐', component: ContextTab },
-  { id: 'compound',     label: 'Compound',      icon: '🧩', component: CompoundTab },
-  { id: 'hoc',          label: 'HOC',           icon: '🔧', component: HOCTab },
+  { id: 'container',     label: 'Container',     icon: '💡', component: ContainerTab },
+  { id: 'custom-hooks',  label: 'Custom Hooks',  icon: '🪝', component: CustomHooksTab },
+  { id: 'context',       label: 'Context',       icon: '🌐', component: ContextTab },
+  { id: 'compound',      label: 'Compound',      icon: '🧩', component: CompoundTab },
+  { id: 'hoc',           label: 'HOC',           icon: '🔧', component: HOCTab },
+  { id: 'optimization',  label: '최적화',         icon: '⚡', component: OptimizationTab },
+  { id: 'modern-react',  label: 'Modern',        icon: '🏆', component: ModernReactTab },
 ];
 
 function TabButton({ tab, active, react, onClick }) {
