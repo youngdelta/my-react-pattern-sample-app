@@ -33,6 +33,9 @@ function NavBar() {
           <Link to="/methods" className="navbar-link">
             🗂️ 개발 방법들
           </Link>
+          <Link to="/methods2" className="navbar-link">
+            🔮 개발 방법들 Part2
+          </Link>
         </div>
 
         <div className="navbar-actions">
