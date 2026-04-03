@@ -1,6 +1,6 @@
 import LottoGenerator from './LottoGenerator'
 import LottoHistory from './LottoHistory'
-import useLottoStore from '../store/lottoStore'
+import useLottoStore from '@/store/lottoStore'
 
 export default function LottoApp() {
   const { historyLottoNumbers } = useLottoStore();

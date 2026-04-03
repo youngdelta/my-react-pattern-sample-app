@@ -1,6 +1,6 @@
 import { useState, useEffect,  createContext, useContext, useMemo } from 'react';
-import useCartStore from '../store/cartStore';
-import { PatternDiagram, ProsCons, WhenToUse, DemoLoading } from './methods/shared';
+import useCartStore from '@/store/cartStore';
+import { PatternDiagram, ProsCons, WhenToUse, DemoLoading } from '@/pages/methods/shared';
 import './ComponentDesignPage.css';
 
 /* ═══════════════════════════════════════════

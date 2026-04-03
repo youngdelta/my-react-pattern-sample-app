@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer, createContext, useContext } from 'react';
-import { PatternDiagram, ProsCons, WhenToUse, DemoLoading, useDebounce } from '../methods/shared';
+import { PatternDiagram, ProsCons, WhenToUse, DemoLoading, useDebounce } from '@/pages/methods/shared';
 
 /*
  * ✅ React Compiler 종합 Modern App

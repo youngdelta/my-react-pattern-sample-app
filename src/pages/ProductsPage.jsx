@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Table, Select, Input, Button, Card, Space, Image, Tag, Row, Col, ConfigProvider, theme, DatePicker, Popover } from 'antd';
-import useLottoStore from '../store/lottoStore';
-import ProductModal from '../components/ProductModal';
+import useLottoStore from '@/store/lottoStore';
+import ProductModal from '@/components/ProductModal';
 import './ProductsPage.css';
 
 function ProductsPage() {

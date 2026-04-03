@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { PatternDiagram, ProsCons, WhenToUse, DemoLoading } from '../methods/shared';
+import { PatternDiagram, ProsCons, WhenToUse, DemoLoading } from '@/pages/methods/shared';
 
 /*
  * ✅ React Compiler 자동 메모이제이션 증명

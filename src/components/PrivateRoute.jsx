@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import useAuthStore from '../store/authStore';
+import useAuthStore from '@/store/authStore';
 
 function PrivateRoute({ children }) {
   const accessToken = useAuthStore((state) => state.accessToken);

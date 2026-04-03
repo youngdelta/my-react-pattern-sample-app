@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
-import { PatternDiagram, ProsCons, WhenToUse, DemoLoading } from '../methods/shared';
+import { PatternDiagram, ProsCons, WhenToUse, DemoLoading } from '@/pages/methods/shared';
 
 /*
  * ✅ Before vs After 비교 탭

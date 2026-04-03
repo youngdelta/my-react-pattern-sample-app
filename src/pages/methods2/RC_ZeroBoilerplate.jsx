@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PatternDiagram, ProsCons, WhenToUse, DemoLoading } from '../methods/shared';
+import { PatternDiagram, ProsCons, WhenToUse, DemoLoading } from '@/pages/methods/shared';
 
 /*
  * ✅ React Compiler: 제로 보일러플레이트 패턴

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import useAuthStore from "../store/authStore";
-import useCartStore from "../store/cartStore";
-import useLottoStore from "../store/lottoStore";
+import useAuthStore from "@/store/authStore";
+import useCartStore from "@/store/cartStore";
+import useLottoStore from "@/store/lottoStore";
 import "./NavBar.css";
 
 function NavBar() {

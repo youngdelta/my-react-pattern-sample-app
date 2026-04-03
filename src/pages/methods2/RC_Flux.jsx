@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer } from 'react';
-import { PatternDiagram, ProsCons, WhenToUse, DemoLoading } from '../methods/shared';
+import { PatternDiagram, ProsCons, WhenToUse, DemoLoading } from '@/pages/methods/shared';
 
 /*
  * ✅ React Compiler 적용 Flux 패턴

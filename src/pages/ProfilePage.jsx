@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../store/authStore';
+import useAuthStore from '@/store/authStore';
 import './ProfilePage.css';
 
 function ProfilePage() {

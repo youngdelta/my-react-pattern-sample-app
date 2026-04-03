@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import useCartStore from '../store/cartStore';
+import useCartStore from '@/store/cartStore';
 import './ProductModal.css';
 
 function StarRating({ rating, size = 'md' }) {

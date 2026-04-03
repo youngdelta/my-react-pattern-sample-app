@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import useLottoStore from '../store/lottoStore'
+import useLottoStore from '@/store/lottoStore'
 
 function LottoHistory() {
     const { historyLottoNumbers, resetLotto } = useLottoStore();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import useLottoStore from '../store/lottoStore';
+import useLottoStore from '@/store/lottoStore';
 
 function LottoGenerator() {
   const { lottoNumbers, handleGenerate, setHistoryLottoNumbers, historyLottoNumbers } = useLottoStore();

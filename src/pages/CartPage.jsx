@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import useCartStore from '../store/cartStore';
-import useAuthStore from '../store/authStore';
-import ProductModal from '../components/ProductModal';
+import useCartStore from '@/store/cartStore';
+import useAuthStore from '@/store/authStore';
+import ProductModal from '@/components/ProductModal';
 import './CartPage.css';
 
 function CartPage() {
