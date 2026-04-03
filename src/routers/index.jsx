@@ -11,6 +11,7 @@ import MethodsPage from '@/pages/MethodsPage'
 import MethodsPage2 from '@/pages/MethodsPage2'
 import DashboardPage from '@/pages/DashboardPage'
 import ComponentDesignPage from '@/pages/ComponentDesignPage'
+import ProductMngtPage from '@/pages/product/ProductMngtPage'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: '/', element: <LottoApp /> },
       { path: '/login', element: <LoginPage /> },
       { path: '/products', element: <ProductsPage /> },
+      { path: '/product-mngt', element: <ProductMngtPage /> },
       { path: '/cart', element: <CartPage /> },
       { path: '/patterns', element: <PatternsPage /> },
       { path: '/methods', element: <MethodsPage /> },

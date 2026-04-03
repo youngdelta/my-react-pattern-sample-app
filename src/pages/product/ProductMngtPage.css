@@ -1,0 +1,27 @@
+.product-mngt-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.product-mngt-title {
+  font-size: 1.75rem;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 1rem;
+}
+
+.filter-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .product-mngt-page {
+    padding: 1rem;
+  }
+}

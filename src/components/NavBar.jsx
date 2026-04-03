@@ -27,6 +27,9 @@ function NavBar() {
 					<Link to="/products" className="navbar-link">
 						📋 상품관리
 					</Link>
+					<Link to="/product-mngt" className="navbar-link">
+						🛍️ 상품
+					</Link>
 					<Link to="/dashboard" className="navbar-link">
 						📊 대시보드
 					</Link>
