@@ -5,6 +5,7 @@ import ProductModal from '@/components/ProductModal';
 import { useProducts, useProductFilter } from './useProductData';
 import ProductSearchFilter from './ProductSearchFilter';
 import ProductResultTable from './ProductResultTable';
+import DevPatternInfo from './DevPatternInfo';
 import './ProductMngtPage.css';
 
 function ProductMngtPage() {
@@ -19,6 +20,8 @@ function ProductMngtPage() {
     >
       <div className="product-mngt-page">
         <h1 className="product-mngt-title">📋 상품관리</h1>
+
+        <DevPatternInfo />
 
         <ProductSearchFilter
           filters={filters}
