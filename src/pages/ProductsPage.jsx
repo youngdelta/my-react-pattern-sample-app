@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Table, Select, Input, Button, Card, Space, Image, Tag, Row, Col, ConfigProvider, theme, DatePicker } from 'antd';
+import { Table, Select, Input, Button, Card, Space, Image, Tag, Row, Col, ConfigProvider, theme, DatePicker, Popover } from 'antd';
 import useLottoStore from '../store/lottoStore';
 import ProductModal from '../components/ProductModal';
 import './ProductsPage.css';
@@ -86,12 +86,17 @@ function ProductsPage() {
       key: 'thumbnail',
       width: 80,
       render: (src) => (
-        <Image
-          src={src}
-          width={50}
-          height={50}
-          style={{ objectFit: 'cover', borderRadius: 4 }}
-        />
+        <Popover
+          content={<img src={src} alt="" style={{ width: 250, borderRadius: 8 }} />}
+          trigger="hover"
+          placement="right"
+        >
+          <img
+            src={src}
+            alt=""
+            style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 4, cursor: 'pointer' }}
+          />
+        </Popover>
       ),
     },
     {
