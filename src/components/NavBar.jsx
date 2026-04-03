@@ -25,7 +25,7 @@ function NavBar() {
 						🎰 로또 생성기
 					</Link>
 					<Link to="/products" className="navbar-link">
-						🛍️ 상품
+						📋 상품관리
 					</Link>
 					<Link to="/dashboard" className="navbar-link">
 						📊 대시보드
