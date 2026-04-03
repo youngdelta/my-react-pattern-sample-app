@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Table, Select, Input, Button, Card, Space, Image, Tag, Row, Col, ConfigProvider, theme } from 'antd';
+import { Table, Select, Input, Button, Card, Space, Image, Tag, Row, Col, ConfigProvider, theme, DatePicker } from 'antd';
 import useLottoStore from '../store/lottoStore';
 import ProductModal from '../components/ProductModal';
 import './ProductsPage.css';
@@ -16,6 +16,8 @@ function ProductsPage() {
   const [selBrand, setSelBrand] = useState(undefined);
   const [inputSku, setInputSku] = useState('');
   const [selAvailability, setSelAvailability] = useState(undefined);
+  const [createdRange, setCreatedRange] = useState(null);
+  const [updatedRange, setUpdatedRange] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -41,9 +43,17 @@ function ProductsPage() {
       if (selBrand && p.brand !== selBrand) return false;
       if (inputSku && !(p.sku || '').toLowerCase().includes(inputSku.toLowerCase())) return false;
       if (selAvailability && p.availabilityStatus !== selAvailability) return false;
+      if (createdRange) {
+        const created = new Date(p.meta?.createdAt);
+        if (created < createdRange[0].startOf('day') || created > createdRange[1].endOf('day')) return false;
+      }
+      if (updatedRange) {
+        const updated = new Date(p.meta?.updatedAt);
+        if (updated < updatedRange[0].startOf('day') || updated > updatedRange[1].endOf('day')) return false;
+      }
       return true;
     });
-  }, [allProducts, selCategory, inputTitle, selBrand, inputSku, selAvailability]);
+  }, [allProducts, selCategory, inputTitle, selBrand, inputSku, selAvailability, createdRange, updatedRange]);
 
   const handleSearch = () => {
     // 현재 조건으로 이미 실시간 필터링 중이므로 추가 동작 불필요
@@ -55,7 +65,8 @@ function ProductsPage() {
     setSelBrand(undefined);
     setInputSku('');
     setSelAvailability(undefined);
-    setAppliedFilter({});
+    setCreatedRange(null);
+    setUpdatedRange(null);
   };
 
   // 상세 모달
@@ -185,6 +196,22 @@ function ProductsPage() {
       sorter: (a, b) => a.minimumOrderQuantity - b.minimumOrderQuantity,
       render: (v) => `${v}개`,
     },
+    {
+      title: '등록일',
+      dataIndex: ['meta', 'createdAt'],
+      key: 'createdAt',
+      width: 120,
+      sorter: (a, b) => new Date(a.meta?.createdAt) - new Date(b.meta?.createdAt),
+      render: (v) => v ? new Date(v).toLocaleDateString('ko-KR') : '-',
+    },
+    {
+      title: '수정일',
+      dataIndex: ['meta', 'updatedAt'],
+      key: 'updatedAt',
+      width: 120,
+      sorter: (a, b) => new Date(a.meta?.updatedAt) - new Date(b.meta?.updatedAt),
+      render: (v) => v ? new Date(v).toLocaleDateString('ko-KR') : '-',
+    },
   ];
 
   return (
@@ -264,6 +291,22 @@ function ProductsPage() {
                 ]}
               />
             </Col>
+            <Col xs={24} sm={12} md={6}>
+              <label className="filter-label">등록일</label>
+              <DatePicker.RangePicker
+                value={createdRange}
+                onChange={setCreatedRange}
+                style={{ width: '100%' }}
+              />
+            </Col>
+            <Col xs={24} sm={12} md={6}>
+              <label className="filter-label">수정일</label>
+              <DatePicker.RangePicker
+                value={updatedRange}
+                onChange={setUpdatedRange}
+                style={{ width: '100%' }}
+              />
+            </Col>
           </Row>
           <Row justify="end" style={{ marginTop: 12 }}>
             <Space>
@@ -288,7 +331,7 @@ function ProductsPage() {
               pageSizeOptions: ['10', '20', '50'],
               showTotal: (total) => `총 ${total}건`,
             }}
-            scroll={{ x: 1800 }}
+            scroll={{ x: 2050 }}
             size="middle"
           />
         </Card>
