@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Table, Select, Input, Button, Card, Space, Image, Tag, Row, Col, ConfigProvider, theme } from 'antd';
 import useLottoStore from '../store/lottoStore';
+import ProductModal from '../components/ProductModal';
 import './ProductsPage.css';
 
 function ProductsPage() {
@@ -9,14 +10,12 @@ function ProductsPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 조회 조건 (입력 중)
+  // 조회 조건
   const [selCategory, setSelCategory] = useState(undefined);
   const [inputTitle, setInputTitle] = useState('');
   const [selBrand, setSelBrand] = useState(undefined);
   const [inputSku, setInputSku] = useState('');
-
-  // 적용된 조회 조건
-  const [appliedFilter, setAppliedFilter] = useState({});
+  const [selAvailability, setSelAvailability] = useState(undefined);
 
   useEffect(() => {
     setLoading(true);
@@ -36,23 +35,18 @@ function ProductsPage() {
   }, [allProducts]);
 
   const filteredProducts = useMemo(() => {
-    const { category, title, brand, sku } = appliedFilter;
     return allProducts.filter((p) => {
-      if (category && p.category !== category) return false;
-      if (title && !p.title.toLowerCase().includes(title.toLowerCase())) return false;
-      if (brand && p.brand !== brand) return false;
-      if (sku && !(p.sku || '').toLowerCase().includes(sku.toLowerCase())) return false;
+      if (selCategory && p.category !== selCategory) return false;
+      if (inputTitle && !p.title.toLowerCase().includes(inputTitle.toLowerCase())) return false;
+      if (selBrand && p.brand !== selBrand) return false;
+      if (inputSku && !(p.sku || '').toLowerCase().includes(inputSku.toLowerCase())) return false;
+      if (selAvailability && p.availabilityStatus !== selAvailability) return false;
       return true;
     });
-  }, [allProducts, appliedFilter]);
+  }, [allProducts, selCategory, inputTitle, selBrand, inputSku, selAvailability]);
 
   const handleSearch = () => {
-    setAppliedFilter({
-      category: selCategory,
-      title: inputTitle,
-      brand: selBrand,
-      sku: inputSku,
-    });
+    // 현재 조건으로 이미 실시간 필터링 중이므로 추가 동작 불필요
   };
 
   const handleReset = () => {
@@ -60,8 +54,12 @@ function ProductsPage() {
     setInputTitle('');
     setSelBrand(undefined);
     setInputSku('');
+    setSelAvailability(undefined);
     setAppliedFilter({});
   };
+
+  // 상세 모달
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   const columns = [
     {
@@ -91,6 +89,9 @@ function ProductsPage() {
       key: 'title',
       ellipsis: true,
       sorter: (a, b) => a.title.localeCompare(b.title),
+      render: (text, record) => (
+        <a onClick={() => setSelectedProductId(record.id)}>{text}</a>
+      ),
     },
     {
       title: '카테고리',
@@ -106,6 +107,15 @@ function ProductsPage() {
       width: 100,
       sorter: (a, b) => a.price - b.price,
       render: (v) => `$${v.toFixed(2)}`,
+    },
+    {
+      title: '할인율',
+      dataIndex: 'discountPercentage',
+      key: 'discountPercentage',
+      width: 80,
+      sorter: (a, b) => a.discountPercentage - b.discountPercentage,
+      render: (v) =>
+        v > 0 ? <Tag color="red">-{Math.round(v)}%</Tag> : '-',
     },
     {
       title: '평점',
@@ -127,6 +137,16 @@ function ProductsPage() {
       sorter: (a, b) => a.stock - b.stock,
     },
     {
+      title: '재고상태',
+      dataIndex: 'availabilityStatus',
+      key: 'availabilityStatus',
+      width: 110,
+      render: (v) => {
+        const colorMap = { 'In Stock': 'green', 'Low Stock': 'orange', 'Out of Stock': 'red' };
+        return <Tag color={colorMap[v] || 'default'}>{v}</Tag>;
+      },
+    },
+    {
       title: '브랜드',
       dataIndex: 'brand',
       key: 'brand',
@@ -144,6 +164,26 @@ function ProductsPage() {
       dataIndex: 'returnPolicy',
       key: 'returnPolicy',
       width: 160,
+    },
+    {
+      title: '배송정보',
+      dataIndex: 'shippingInformation',
+      key: 'shippingInformation',
+      width: 150,
+    },
+    {
+      title: '보증정보',
+      dataIndex: 'warrantyInformation',
+      key: 'warrantyInformation',
+      width: 140,
+    },
+    {
+      title: '최소주문',
+      dataIndex: 'minimumOrderQuantity',
+      key: 'minimumOrderQuantity',
+      width: 90,
+      sorter: (a, b) => a.minimumOrderQuantity - b.minimumOrderQuantity,
+      render: (v) => `${v}개`,
     },
   ];
 
@@ -209,6 +249,21 @@ function ProductsPage() {
                 onPressEnter={handleSearch}
               />
             </Col>
+            <Col xs={24} sm={12} md={6}>
+              <label className="filter-label">재고상태</label>
+              <Select
+                placeholder="전체"
+                value={selAvailability}
+                onChange={setSelAvailability}
+                allowClear
+                style={{ width: '100%' }}
+                options={[
+                  { label: 'In Stock', value: 'In Stock' },
+                  { label: 'Low Stock', value: 'Low Stock' },
+                  { label: 'Out of Stock', value: 'Out of Stock' },
+                ]}
+              />
+            </Col>
           </Row>
           <Row justify="end" style={{ marginTop: 12 }}>
             <Space>
@@ -233,10 +288,17 @@ function ProductsPage() {
               pageSizeOptions: ['10', '20', '50'],
               showTotal: (total) => `총 ${total}건`,
             }}
-            scroll={{ x: 1200 }}
+            scroll={{ x: 1800 }}
             size="middle"
           />
         </Card>
+        {/* 상세 모달 */}
+        {selectedProductId && (
+          <ProductModal
+            productId={selectedProductId}
+            onClose={() => setSelectedProductId(null)}
+          />
+        )}
       </div>
     </ConfigProvider>
   );
