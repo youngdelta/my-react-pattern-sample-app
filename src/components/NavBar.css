@@ -153,6 +153,61 @@
   border-bottom-color: #6366f1;
 }
 
+/* 드롭다운 메뉴 */
+.navbar-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.navbar-dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  min-width: 180px;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  padding: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1000;
+}
+
+.navbar-dropdown:hover .navbar-dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.navbar-dropdown-item {
+  display: block;
+  padding: 0.6rem 0.8rem;
+  color: #374151;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 0.3rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.navbar-dropdown-item:hover {
+  background: rgba(99, 102, 241, 0.08);
+  color: #6366f1;
+}
+
+
 /* 장바구니 아이콘 */
 .navbar-theme-toggle {
   background: none;
@@ -215,6 +270,17 @@
 :root.dark-mode .cart-badge { border-color: #1e1e2e; }
 :root.dark-mode .navbar-link { color: #cdd6f4; }
 :root.dark-mode .navbar-link:hover { color: #89b4fa; border-bottom-color: #89b4fa; }
+
+:root.dark-mode .navbar-dropdown-content {
+  background: rgba(30, 30, 46, 0.95);
+  border-color: rgba(137, 180, 250, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+:root.dark-mode .navbar-dropdown-item { color: #a6adc8; }
+:root.dark-mode .navbar-dropdown-item:hover {
+  background: rgba(137, 180, 250, 0.1);
+  color: #89b4fa;
+}
 
 /* 반응형 */
 @media (max-width: 480px) {
