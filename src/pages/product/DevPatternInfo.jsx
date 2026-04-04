@@ -109,8 +109,12 @@ function DevPatternInfo() {
       title="🧩 적용된 개발 패턴"
       size="small"
       style={{ marginBottom: 16, cursor: 'pointer' }}
+      extra={
+        <a onClick={() => setOpen((v) => !v)}>
+          {open ? <UpOutlined /> : <DownOutlined />} {open ? '접기' : '펼치기'}
+        </a>
+      }
       onHeaderClick={() => setOpen((v) => !v)}
-      onClick={()=>setOpen(v=>!v)}
     >
       {open && <Tabs items={tabItems} defaultActiveKey="diagram" size="small" />}
     </Card>
